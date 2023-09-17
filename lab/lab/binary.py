@@ -25,18 +25,16 @@ def dichotomy(function, a, b, epsilon, a_priory = False):
 
     assert func_product < 0
     if (a_priory):
-        dichotomy_apr(function, a, b, epsilon)
+        return dichotomy_apr(function, a, b, epsilon)
     else:
-        dichotomy_iter(function, a, b, epsilon)
+        return dichotomy_iter(function, a, b, epsilon)
 
 
 def dichotomy_apr(function, a, b, epsilon):
     num_iterations = math.floor(math.log2((b - a) / epsilon)) + 1
 
-    x = 0
-
     for _ in range(num_iterations):
-        x = (a + b) << 1
+        x = (a + b) / 2
         val = function(x)
         if is_zero(val):
             return x
@@ -47,14 +45,15 @@ def dichotomy_apr(function, a, b, epsilon):
     return (a+b) << 1
 
 def dichotomy_iter(function, a, b, epsilon):
+    xs = sp.symbols('x')
     while b - a > epsilon:
-        x = (a + b) << 1
-        val = function(x)
+        x = (a + b) / 2
+        val = function.subs(xs, x)
         if is_zero(val):
             return x
-        if sp.sign(function(a)) == sp.sign(val):
+        if sp.sign(function.subs(xs, a)) == sp.sign(val):
             a = x
-        if sp.sign(function(a)) == sp.sign(val):
+        if sp.sign(function.subs(xs, b)) == sp.sign(val):
             b = x
 
     return (a+b) << 1

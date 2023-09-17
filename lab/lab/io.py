@@ -1,5 +1,4 @@
 import re
-import json
 
 
 def parse_task_file(filename):
@@ -29,10 +28,4 @@ def parse_task_file(filename):
 
     return tasks
 
-if __name__ == "__main__":
-    filename = "../input\\input.txt"
-    try:
-        tasks = parse_task_file(filename)
-        print(json.dumps(tasks, indent=4))
-    except Exception as e:
-        print(f"An error occurred: {e}")
+
