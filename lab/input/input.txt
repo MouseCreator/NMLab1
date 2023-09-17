@@ -6,7 +6,7 @@ Task1 {
     method: dichotomy
     a: 0
     b: pi / 2
-    a_priory: false
+    a_priory: true
 }
 
 Task2 {

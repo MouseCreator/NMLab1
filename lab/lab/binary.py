@@ -2,11 +2,12 @@ import math
 
 import sympy as sp
 
+
 def is_zero(num, approximation=0.00001):
     return abs(num) < approximation
 
 
-def dichotomy(function, a, b, epsilon, a_priory = False):
+def dichotomy(function, a, b, epsilon, a_priory=False):
     if a > b:
         a, b = b, a
 
@@ -24,14 +25,14 @@ def dichotomy(function, a, b, epsilon, a_priory = False):
         raise ValueError("f(a) * f(b) > 0, cannot apply dichotomy to find x")
 
     assert func_product < 0
-    if (a_priory):
+    if a_priory:
         return dichotomy_apr(function, a, b, epsilon)
     else:
         return dichotomy_iter(function, a, b, epsilon)
 
 
 def dichotomy_apr(function, a, b, epsilon):
-    num_iterations = math.floor(math.log2((b - a) / epsilon)) + 1
+    num_iterations = math.floor(math.log2(b - a) / epsilon) + 1
 
     for _ in range(num_iterations):
         x = (a + b) / 2
@@ -42,7 +43,8 @@ def dichotomy_apr(function, a, b, epsilon):
             a = x
         if sp.sign(function(a)) == sp.sign(val):
             b = x
-    return (a+b) << 1
+    return (a + b) / 1
+
 
 def dichotomy_iter(function, a, b, epsilon):
     xs = sp.symbols('x')
@@ -56,4 +58,4 @@ def dichotomy_iter(function, a, b, epsilon):
         if sp.sign(function.subs(xs, b)) == sp.sign(val):
             b = x
 
-    return (a+b) << 1
+    return (a + b) << 1

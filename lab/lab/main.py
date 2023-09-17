@@ -12,8 +12,8 @@ def execute_task(task):
         execute_dichotomy(task)
 
 
-def to_bool(str):
-    if str.lower() == "true":
+def to_bool(strval):
+    if strval.lower() == "true":
         return True
     else:
         return False
