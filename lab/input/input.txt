@@ -1,0 +1,21 @@
+
+Task1 {
+    equation: x + sin(x) - 1 = 0
+    variable: x
+    epsilon: 10^-4
+    method: dichotomy
+    a: 0
+    b: pi / 2
+    a_priory: true
+}
+
+Task2 {
+    equation: x + 1 = 0
+    variable: x
+    epsilon: 10^-3
+    method: nton
+    a: 0
+    b: pi
+    a_priory: true
+}
+
