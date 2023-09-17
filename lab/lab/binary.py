@@ -2,7 +2,6 @@ import math
 
 import sympy as sp
 
-
 def is_zero(num, approximation=0.00001):
     return abs(num) < approximation
 
