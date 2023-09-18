@@ -4,11 +4,12 @@ import lab.lab.io as io
 
 
 def execute_task(task):
-    if task["method"] == "dichotomy":
+    method = task["method"].lower()
+    if method == "dichotomy" or method == "d":
         execute_dichotomy(task)
-    elif task["method"] == "iteration":
+    elif method == "iteration" or method == "i":
         execute_iter(task)
-    elif task["method"] == "newton":
+    elif method == "newton" or method == "n":
         execute_newton(task)
     else:
         print("Unknown method " + task["method"])
