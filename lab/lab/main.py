@@ -29,8 +29,9 @@ def execute_dichotomy(task):
     a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
     b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
     a_priory = to_bool(task["a_priory"])
+    strict = to_bool(task["strict"])
     try:
-        root = di.dichotomy(function, a, b, epsilon, a_priory)
+        root = di.dichotomy(function, a, b, epsilon, a_priory, strict)
         formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
         print(formatted_string)
     except Exception as e:
@@ -59,8 +60,9 @@ def execute_iter(task):
     a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
     b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
     a_priory = to_bool(task["a_priory"])
+    strict = to_bool(task["strict"])
     try:
-        root = di.iteration(function, a, b, epsilon, a_priory)
+        root = di.iteration(function, a, b, epsilon, a_priory, strict)
         formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
         print(formatted_string)
     except Exception as e:
@@ -75,7 +77,8 @@ def execute_newton(task):
     a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
     b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
     a_priory = to_bool(task["a_priory"])
-    root = di.newton(function, a, b, epsilon, a_priory)
+    strict = to_bool(task["strict"])
+    root = di.newton(function, a, b, epsilon, a_priory, strict)
     formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
     print(formatted_string)
 

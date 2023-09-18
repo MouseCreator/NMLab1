@@ -33,7 +33,7 @@ def ordered(a, b):
     return a, b
 
 
-def dichotomy(function, a, b, epsilon, a_priory=False):
+def dichotomy(function, a, b, epsilon, a_priory=False,  strict = False):
     a, b = ordered(a, b)
     res, fin = init_f(function, a, b)
     if fin:
@@ -148,7 +148,7 @@ def iteration_iter(function, a, b, tau, epsilon):
     return x
 
 
-def iteration(function, a, b, epsilon, a_priory=False):
+def iteration(function, a, b, epsilon, a_priory=False, strict = False):
     a, b = ordered(a, b)
     res, fin = init_f(function, a, b)
     if fin:
@@ -160,8 +160,10 @@ def iteration(function, a, b, epsilon, a_priory=False):
 
         tau = 2 / (deriv_min + deriv_max)
         q = (deriv_max - deriv_min) / (deriv_max + deriv_min)
-        if q < 0.99 and derivative_sign(function, 'x', a, b):
+        if q < 0.95 and derivative_sign(function, 'x', a, b):
             break
+        elif strict:
+            raise "ERROR: q >= 1, cannot use this method!"
         x = (a + b) / 2
         val = function.subs(xs, x)
         if sp.sign(function.subs(xs, a)) == sp.sign(val):
@@ -200,7 +202,7 @@ def newton_a_priory(function, a, b, epsilon, q):
     return x
 
 
-def newton(function, a, b, epsilon, a_priory=False):
+def newton(function, a, b, epsilon, a_priory=False, strict=False):
     a, b = ordered(a, b)
     res, fin = init_f(function, a, b)
     if fin:
@@ -212,8 +214,10 @@ def newton(function, a, b, epsilon, a_priory=False):
         q = derivative_max(deriv, xs, a, b) * (b - a) / (2 * derivative_min(function, xs, a, b))
         x = (a + b) / 2
         val = function.subs(xs, x)
-        if q < 1:
+        if q < 0.95:
             break
+        elif strict:
+            raise "ERROR: q >= 1, cannot use this method!"
         if sp.sign(function.subs(xs, a)) == sp.sign(val):
             a = x
         if sp.sign(function.subs(xs, b)) == sp.sign(val):
