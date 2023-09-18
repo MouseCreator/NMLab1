@@ -8,6 +8,7 @@ from scipy.optimize import minimize_scalar
 def is_zero(num, approximation=0.0000001):
     return abs(num) < approximation
 
+
 def init_f(function, a, b):
     if a > b:
         a, b = b, a
@@ -27,6 +28,8 @@ def init_f(function, a, b):
 
     assert func_product < 0
     return 0, False
+
+
 def dichotomy(function, a, b, epsilon, a_priory=False):
     res, fin = init_f(function, a, b)
     if fin:
@@ -102,7 +105,7 @@ def derivative_sign(function, variable, a, b):
     derivative_func = sp.lambdify(xs, derivative, 'numpy')
 
     def to_min(x_value):
-        return (derivative_func(x_value))
+        return derivative_func(x_value)
 
     def to_max(x_value):
         return -(derivative_func(x_value))
@@ -126,7 +129,7 @@ def iteration_apriory(function, a, b, tau, q, epsilon):
     return x
 
 
-def iteration_iter(function, a, b, tau, q, epsilon):
+def iteration_iter(function, a, b, tau, epsilon):
     x = a
     xn = b
     xs = sp.symbols('x')
@@ -165,7 +168,7 @@ def iteration(function, a, b, epsilon, a_priory=False):
     if a_priory:
         return iteration_apriory(function, a, b, tau, q, epsilon)
     else:
-        return iteration_iter(function, a, b, tau, q, epsilon)
+        return iteration_iter(function, a, b, tau, epsilon)
 
 
 def newton_iter(function, a, b, epsilon):
@@ -180,7 +183,7 @@ def newton_iter(function, a, b, epsilon):
 
 
 def newton_a_priory(function, a, b, epsilon, q):
-    num_iterations = math.floor(math.log2(math.log((b-a)/epsilon)/math.log(1/q)+1))+1
+    num_iterations = math.floor(math.log2(math.log((b - a) / epsilon) / math.log(1 / q) + 1)) + 1
     x = a
     xs = sp.symbols('x')
     deriv = sp.diff(function, xs)
@@ -188,6 +191,7 @@ def newton_a_priory(function, a, b, epsilon, q):
         x = x - function.subs(xs, x) / deriv.subs(xs, x)
 
     return x
+
 
 def newton(function, a, b, epsilon, a_priory=False):
     res, fin = init_f(function, a, b)
@@ -211,4 +215,3 @@ def newton(function, a, b, epsilon, a_priory=False):
         return newton_a_priory(function, a, b, epsilon, q)
     else:
         return newton_iter(function, a, b, epsilon)
-    
