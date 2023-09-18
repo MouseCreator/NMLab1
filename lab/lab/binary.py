@@ -1,7 +1,6 @@
 import math
 
 import sympy as sp
-import numpy as np
 
 from scipy.optimize import minimize_scalar
 
@@ -9,8 +8,7 @@ from scipy.optimize import minimize_scalar
 def is_zero(num, approximation=0.0000001):
     return abs(num) < approximation
 
-
-def dichotomy(function, a, b, epsilon, a_priory=False):
+def init_f(function, a, b):
     if a > b:
         a, b = b, a
 
@@ -20,14 +18,19 @@ def dichotomy(function, a, b, epsilon, a_priory=False):
 
     if is_zero(func_product):
         if is_zero(function.subs(x, a)):
-            return a
+            return a, True
         else:
-            return b
+            return b, True
 
     if func_product > 0:
         raise ValueError("f(a) * f(b) > 0, cannot apply dichotomy to find x")
 
     assert func_product < 0
+    return 0, False
+def dichotomy(function, a, b, epsilon, a_priory=False):
+    res, fin = init_f(function, a, b)
+    if fin:
+        return res
     if a_priory:
         return dichotomy_apr(function, a, b, epsilon)
     else:
@@ -137,8 +140,9 @@ def iteration_iter(function, a, b, tau, q, epsilon):
 
 
 def iteration(function, a, b, epsilon, a_priory=False):
-    q = 0
-    tau = 0
+    res, fin = init_f(function, a, b)
+    if fin:
+        return res
     xs = sp.symbols('x')
     while True:
         deriv_min = derivative_min(function, 'x', a, b)
@@ -164,8 +168,31 @@ def iteration(function, a, b, epsilon, a_priory=False):
         return iteration_iter(function, a, b, tau, q, epsilon)
 
 
+def newton_iter(function, a, b, epsilon):
+    x = a
+    x0 = b
+    xs = sp.symbols('x')
+    deriv = sp.diff(function, xs)
+    while abs(x0 - x) > epsilon:
+        x0 = x
+        x = x - function.subs(xs, x) / deriv.subs(xs, x)
+    return x
+
+
+def newton_a_priory(function, a, b, epsilon, q):
+    num_iterations = math.floor(math.log2(math.log((b-a)/epsilon)/math.log(1/q)+1))+1
+    x = a
+    xs = sp.symbols('x')
+    deriv = sp.diff(function, xs)
+    for _ in range(num_iterations):
+        x = x - function.subs(xs, x) / deriv.subs(xs, x)
+
+    return x
+
 def newton(function, a, b, epsilon, a_priory=False):
-    q = 2
+    res, fin = init_f(function, a, b)
+    if fin:
+        return res
     xs = 'x'
     sym = sp.symbols(xs)
     while True:
@@ -180,10 +207,8 @@ def newton(function, a, b, epsilon, a_priory=False):
         if sp.sign(function.subs(xs, b)) == sp.sign(val):
             b = x
 
-    x = a
-    x0 = b
-
-    while abs(x0 - x) > epsilon:
-        x0 = x
-        x = x - function.subs(xs, x) / deriv.subs(xs, x)
-    return x
+    if a_priory:
+        return newton_a_priory(function, a, b, epsilon, q)
+    else:
+        return newton_iter(function, a, b, epsilon)
+    
