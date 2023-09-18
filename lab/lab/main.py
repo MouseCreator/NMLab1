@@ -22,10 +22,11 @@ def to_bool(strval):
 
 
 def execute_dichotomy(task):
-    function = sp.parse_expr(task["equation"])
-    epsilon = sp.parse_expr(task["epsilon"]).evalf()
-    a = sp.parse_expr(task["a"]).evalf()
-    b = sp.parse_expr(task["b"]).evalf()
+    expr = prep_expr(task["equation"])
+    function = sp.parse_expr(expr)
+    epsilon = sp.parse_expr(prep_expr_simple(task["epsilon"])).evalf()
+    a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
+    b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
     a_priory = to_bool(task["a_priory"])
     try:
         root = di.dichotomy(function, a, b, epsilon, a_priory)

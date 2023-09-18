@@ -41,18 +41,20 @@ def dichotomy(function, a, b, epsilon, a_priory=False):
 
 
 def dichotomy_apr(function, a, b, epsilon):
-    num_iterations = math.floor(math.log2(b - a) / epsilon) + 1
+    num_iterations = math.floor(math.log2((b - a) / epsilon)) + 1
+
+    xs = sp.symbols('x')
 
     for _ in range(num_iterations):
         x = (a + b) / 2
-        val = function(x)
+        val = function.subs(xs, x)
         if is_zero(val):
             return x
-        if sp.sign(function(a)) == sp.sign(val):
+        if sp.sign(function.subs(xs, a)) == sp.sign(val):
             a = x
-        if sp.sign(function(a)) == sp.sign(val):
+        if sp.sign(function.subs(xs, b)) == sp.sign(val):
             b = x
-    return (a + b) / 1
+    return (a + b) / 2
 
 
 def dichotomy_iter(function, a, b, epsilon):
