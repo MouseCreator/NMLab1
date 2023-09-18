@@ -3,8 +3,6 @@ import lab.lab.binary as di
 import lab.lab.io as io
 
 
-
-
 def execute_task(task):
     if task["method"] == "dichotomy":
         execute_dichotomy(task)
@@ -12,6 +10,8 @@ def execute_task(task):
         execute_iter(task)
     elif task["method"] == "newton":
         execute_newton(task)
+    else:
+        print("Unknown method " + task["method"])
 
 
 def to_bool(strval):
@@ -19,6 +19,8 @@ def to_bool(strval):
         return True
     else:
         return False
+
+
 def execute_dichotomy(task):
     function = sp.parse_expr(task["equation"])
     epsilon = sp.parse_expr(task["epsilon"]).evalf()
@@ -30,17 +32,17 @@ def execute_dichotomy(task):
         formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
         print(formatted_string)
     except Exception as e:
-        formatted_string = "{}: ERROR!\n{}".format( task["name"], e)
+        formatted_string = "{}: ERROR!\n{}".format(task["name"], e)
         print(formatted_string)
 
 
-def prep_expr(str):
-    str = prep_expr_simple(str)
+def prep_expr(exp):
+    exp = prep_expr_simple(exp)
 
-    if str.count("=") > 0:
-        str.replace("=", "-(")
-        str = str + ")"
-    return str
+    if exp.count("=") > 0:
+        exp.replace("=", "-(")
+        exp = exp + ")"
+    return exp
 
 
 def prep_expr_simple(str):
@@ -55,13 +57,15 @@ def execute_iter(task):
     a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
     b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
     a_priory = to_bool(task["a_priory"])
-    #try:
-    root = di.iteration(function, a, b, epsilon, a_priory)
-    formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
-    print(formatted_string)
-    #except Exception as e:
-     #   formatted_string = "{}: ERROR!\n{}".format(task["name"], e)
-      #  print(formatted_string)
+    try:
+        root = di.iteration(function, a, b, epsilon, a_priory)
+        formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
+        print(formatted_string)
+    except Exception as e:
+        formatted_string = "{}: ERROR!\n{}".format(task["name"], e)
+        print(formatted_string)
+
+
 def execute_newton(task):
     expr = prep_expr(task["equation"])
     function = sp.parse_expr(expr)
@@ -73,13 +77,12 @@ def execute_newton(task):
     formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
     print(formatted_string)
 
+
 if __name__ == "__main__":
     filename = "../input\\input.txt"
     try:
         tasks = io.parse_task_file(filename)
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-    if tasks:
         for t in tasks:
             execute_task(t)
+    except Exception as e:
+        print(f"An error occurred: {e}")
