@@ -10,9 +10,6 @@ def is_zero(num, approximation=0.0000001):
 
 
 def init_f(function, a, b):
-    if a > b:
-        a, b = b, a
-
     x = sp.symbols('x')
 
     func_product = function.subs(x, a) * function.subs(x, b)
@@ -30,7 +27,14 @@ def init_f(function, a, b):
     return 0, False
 
 
+def ordered(a, b):
+    if a > b:
+        return b, a
+    return a, b
+
+
 def dichotomy(function, a, b, epsilon, a_priory=False):
+    a, b = ordered(a, b)
     res, fin = init_f(function, a, b)
     if fin:
         return res
@@ -136,15 +140,16 @@ def iteration_iter(function, a, b, tau, epsilon):
     xn = b
     xs = sp.symbols('x')
 
-    derivative = sp.diff(function, x)
+    derivative = sp.diff(function, xs)
 
     while abs(xn - x) > epsilon:
         x = xn
-        xn = x + sp.sign(derivative.subs(x, xs)) * tau * function.subs(xs, x)
+        xn = x + sp.sign(derivative.subs(xs, x)) * tau * function.subs(xs, x)
     return x
 
 
 def iteration(function, a, b, epsilon, a_priory=False):
+    a, b = ordered(a, b)
     res, fin = init_f(function, a, b)
     if fin:
         return res
@@ -196,6 +201,7 @@ def newton_a_priory(function, a, b, epsilon, q):
 
 
 def newton(function, a, b, epsilon, a_priory=False):
+    a, b = ordered(a, b)
     res, fin = init_f(function, a, b)
     if fin:
         return res
