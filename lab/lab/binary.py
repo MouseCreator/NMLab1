@@ -2,7 +2,7 @@ import math
 
 import sympy as sp
 
-
+from scipy.optimize import minimize_scalar
 def is_zero(num, approximation=0.0000001):
     return abs(num) < approximation
 
@@ -61,27 +61,29 @@ def dichotomy_iter(function, a, b, epsilon):
     return (a + b) << 1
 
 
-def derivative_min(func, variable, a, b):
+def derivative_min(function, variable, a, b):
+
     x = sp.symbols(variable)
+    derivative_1st = sp.diff(function, x)
+    abs_derivative = sp.Abs(derivative_1st)
 
-    derivative = sp.diff(func, x)
+    num_abs_derivative = sp.lambdify(x, abs_derivative, 'numpy')
 
-    critical_points = sp.solve(derivative, x)
-    critical_points = [p.evalf() for p in critical_points if a <= p <= b]
+    def to_min(xv):
+        return -num_abs_derivative(xv)
 
-    values = [derivative.subs(x, a).evalf(), derivative.subs(x, b).evalf()] + [derivative.subs(x, p) for p in
-                                                                               critical_points]
+    result = minimize_scalar(to_min, bounds=(a, b), method='bounded')
 
-    min_value = min(values)
+    max_abs_derivative = -result.fun
 
-    return min_value
+    return max_abs_derivative
 
 
 def derivative_max(func, variable, a, b):
     x = sp.symbols(variable)
 
     derivative = sp.diff(func, x)
-
+    derivative = sp.Abs(derivative)
     critical_points = sp.solve(derivative, x)
     critical_points = [p.evalf() for p in critical_points if a <= p <= b]
 
@@ -92,10 +94,10 @@ def derivative_max(func, variable, a, b):
     return max_value
 
 
-def iteration_apriory(function, a, b, tau, dmin, dmax, epsilon):
+def iteration_apriory(function, a, b, tau, epsilon):
     z = b - a
 
-    q = (dmax - dmin) / (dmax + dmin)
+    q = 0.5
 
     num_iterations = math.floor(math.log(abs(z) / epsilon) / math.log(1/q)) + 1
 
@@ -123,12 +125,30 @@ def iteration_iter(function, a, b, tau, epsilon):
 
 
 def iteration(function, a, b, epsilon, a_priory = False):
-    derivMin = derivative_min(function, 'x', a, b)
-    derivMax = derivative_max(function, 'x', a, b)
+    deriv_min = derivative_min(function, 'x', a, b)
+    deriv_max = derivative_max(function, 'x', a, b)
 
-    tau = 2 / (derivMin + derivMax)
+    tau = 2 / (deriv_min + deriv_max)
+
+    q = deriv_max - deriv_min
 
     if a_priory:
-        return iteration_apriory(function, a, b, derivMin, derivMax, tau, epsilon)
+        return iteration_apriory(function, a, b, tau, epsilon)
     else:
         return iteration_iter(function, a, b, tau, epsilon)
+
+def newton(function, a, b, epsilon, a_priory = False):
+    xs = 'x'
+    deriv = sp.diff(function, xs)
+    q = derivative_max(deriv, xs, a, b) * (b - a) / (2 * derivative_min(function, xs, a, b))
+
+    if q >=1:
+        raise ValueError("Value error in Newton method: q >= 1")
+
+    x = a
+    x0 = b
+
+    while abs(x0-x) > epsilon:
+        x0 = x
+        x = x - function.subs(xs, x) / deriv.subs(xs, x)
+    return x

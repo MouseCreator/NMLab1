@@ -3,13 +3,15 @@ import lab.lab.binary as di
 import lab.lab.io as io
 
 
+
+
 def execute_task(task):
     if task["method"] == "dichotomy":
         execute_dichotomy(task)
     elif task["method"] == "iteration":
-        execute_dichotomy(task)
+        execute_iter(task)
     elif task["method"] == "newton":
-        execute_dichotomy(task)
+        execute_newton(task)
 
 
 def to_bool(strval):
@@ -32,6 +34,44 @@ def execute_dichotomy(task):
         print(formatted_string)
 
 
+def prep_expr(str):
+    str = prep_expr_simple(str)
+
+    if str.count("=") > 0:
+        str.replace("=", "-(")
+        str = str + ")"
+    return str
+
+
+def prep_expr_simple(str):
+    str = str.replace("^", "**")
+    return str
+
+
+def execute_iter(task):
+    expr = prep_expr(task["equation"])
+    function = sp.parse_expr(expr)
+    epsilon = sp.parse_expr(prep_expr_simple(task["epsilon"])).evalf()
+    a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
+    b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
+    a_priory = to_bool(task["a_priory"])
+    #try:
+    root = di.iteration(function, a, b, epsilon, a_priory)
+    formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
+    print(formatted_string)
+    #except Exception as e:
+     #   formatted_string = "{}: ERROR!\n{}".format(task["name"], e)
+      #  print(formatted_string)
+def execute_newton(task):
+    expr = prep_expr(task["equation"])
+    function = sp.parse_expr(expr)
+    epsilon = sp.parse_expr(prep_expr_simple(task["epsilon"])).evalf()
+    a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
+    b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
+    a_priory = to_bool(task["a_priory"])
+    root = di.newton(function, a, b, epsilon, a_priory)
+    formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
+    print(formatted_string)
 
 if __name__ == "__main__":
     filename = "../input\\input.txt"
