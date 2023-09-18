@@ -23,14 +23,14 @@ def to_bool(strval):
 
 
 def execute_dichotomy(task):
-    expr = prep_expr(task["equation"])
-    function = sp.parse_expr(expr)
-    epsilon = sp.parse_expr(prep_expr_simple(task["epsilon"])).evalf()
-    a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
-    b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
-    a_priory = to_bool(task["a_priory"])
-    strict = to_bool(task["strict"])
     try:
+        expr = prep_expr(task["equation"])
+        function = sp.parse_expr(expr)
+        epsilon = sp.parse_expr(prep_expr_simple(task["epsilon"])).evalf()
+        a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
+        b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
+        a_priory = to_bool(task["a_priory"])
+        strict = to_bool(task["strict"])
         root = di.dichotomy(function, a, b, epsilon, a_priory, strict)
         formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
         print(formatted_string)
@@ -54,14 +54,14 @@ def prep_expr_simple(str):
 
 
 def execute_iter(task):
-    expr = prep_expr(task["equation"])
-    function = sp.parse_expr(expr)
-    epsilon = sp.parse_expr(prep_expr_simple(task["epsilon"])).evalf()
-    a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
-    b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
-    a_priory = to_bool(task["a_priory"])
-    strict = to_bool(task["strict"])
     try:
+        expr = prep_expr(task["equation"])
+        function = sp.parse_expr(expr)
+        epsilon = sp.parse_expr(prep_expr_simple(task["epsilon"])).evalf()
+        a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
+        b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
+        a_priory = to_bool(task["a_priory"])
+        strict = to_bool(task["strict"])
         root = di.iteration(function, a, b, epsilon, a_priory, strict)
         formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
         print(formatted_string)
@@ -71,16 +71,20 @@ def execute_iter(task):
 
 
 def execute_newton(task):
-    expr = prep_expr(task["equation"])
-    function = sp.parse_expr(expr)
-    epsilon = sp.parse_expr(prep_expr_simple(task["epsilon"])).evalf()
-    a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
-    b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
-    a_priory = to_bool(task["a_priory"])
-    strict = to_bool(task["strict"])
-    root = di.newton(function, a, b, epsilon, a_priory, strict)
-    formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
-    print(formatted_string)
+    try:
+        expr = prep_expr(task["equation"])
+        function = sp.parse_expr(expr)
+        epsilon = sp.parse_expr(prep_expr_simple(task["epsilon"])).evalf()
+        a = sp.parse_expr(prep_expr_simple(task["a"])).evalf()
+        b = sp.parse_expr(prep_expr_simple(task["b"])).evalf()
+        a_priory = to_bool(task["a_priory"])
+        strict = to_bool(task["strict"])
+        root = di.newton(function, a, b, epsilon, a_priory, strict)
+        formatted_string = "{} found root of {}:\n{}={}".format(task["name"], task["equation"], task["variable"], root)
+        print(formatted_string)
+    except Exception as e:
+        formatted_string = "{}: ERROR!\n{}".format(task["name"], e)
+        print(formatted_string)
 
 
 if __name__ == "__main__":
