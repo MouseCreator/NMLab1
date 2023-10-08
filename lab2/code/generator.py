@@ -29,5 +29,11 @@ def generate_random_matrix_eigen_values_based(dim):
     return np.dot(np.dot(orthogonal_matrix, diagonal_matrix), orthogonal_matrix.T)
 
 
-print(generate_random_matrix(4))
-print(generate_random_int_matrix(4))
+def generate_hilbert_matrix(dim):
+    h = np.zeros((dim, dim))
+    for i in range(dim):
+        for j in range(dim):
+            h[i][j] = 1/(i+j+1)
+
+    return h
+
