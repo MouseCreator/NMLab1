@@ -1,11 +1,11 @@
 
 Task1 {
-    equation: x^3 + x * sin(x) + x + 2
+    equation: x^4 + x^3 - 6*x^2 + 20*x - 16 = 0
     variable: x
-    epsilon: 10^-4
-    method: iteration
-    a: -1
-    b: -2
+    epsilon: 0.0001
+    method: d
+    a: 0
+    b: 3
     a_priory: false
     strict: false
 }
