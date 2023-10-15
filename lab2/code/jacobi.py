@@ -26,6 +26,23 @@ def to_non_zero_diagonal(matrix, eps):
     return matrix
 
 
+def is_diagonally_dominant(matrix, eps):
+    n = matrix.shape[0]
+    has_strict = False
+    for i in range(n):
+        diag = np.abs(matrix[i][i])
+        el_sum = 0
+        for j in range(n):
+            if i == j:
+                continue
+            el_sum += np.abs(matrix[i][j])
+        if diag < el_sum:
+            return False
+        if diag - eps > el_sum:
+            has_strict = True
+    return has_strict
+
+
 def jacobi(matrix, b, x0, eps):
     matrix = to_non_zero_diagonal(matrix, eps)
     n = matrix.shape[0]
@@ -49,6 +66,6 @@ def jacobi(matrix, b, x0, eps):
 mtx = np.array([[3, -1, 1],
                 [-1, 2, 0.5],
                 [1, 0.5, 3]])
-b = np.array([1, 1.75, 2.5])
-x = jacobi(mtx, b, np.array([0, 0, 0]), 0.001)
+bx = np.array([1, 1.75, 2.5])
+x = jacobi(mtx, bx, np.array([0, 0, 0]), 0.001)
 print(x)
