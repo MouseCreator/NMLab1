@@ -5,12 +5,12 @@ def generate_random_matrix(dim):
     return np.random.rand(dim, dim)
 
 
-def generate_random_int_matrix(dim):
-    return np.random.randint(low=0, high=101, size=(dim, dim))
+def generate_random_int_matrix(dim, lim=101):
+    return np.random.randint(low=0, high=lim, size=(dim, dim))
 
 
-def generate_random_matrix_diagonal_priority(dim):
-    return np.random.randint(low=0, high=101, size=(dim, dim))
+def generate_random_matrix_diagonal_priority(dim, lim=101):
+    return np.random.randint(low=0, high=lim, size=(dim, dim))
 
 
 def generate_orthogonal_matrix(dim):
@@ -33,7 +33,10 @@ def generate_hilbert_matrix(dim):
     h = np.zeros((dim, dim))
     for i in range(dim):
         for j in range(dim):
-            h[i][j] = 1/(i+j+1)
+            h[i][j] = 1 / (i + j + 1)
 
     return h
 
+
+def generate_vector(dim, lim=101):
+    return np.random.uniform(low=-lim, high=lim, size=dim)
