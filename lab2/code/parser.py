@@ -27,13 +27,13 @@ def parse_input(input_string):
     return matrix_a, vector_b
 
 
-input_string = """3   -1  1   |   1
--1  2   0.5 |   1.75
-1   0.5 3      2.5
-"""
-mtx, vb = parse_input(input_string)
+def read_file(filename):
+    with open(filename, 'r') as file:
+        content = file.read()
+    return content
 
-print("Matrix A:")
-print(mtx)
-print("Vector b:")
-print(vb)
+
+def read():
+    filename = "../input\\matrix.txt"
+    mtx_content = read_file(filename)
+    return parse_input(mtx_content)
