@@ -34,6 +34,6 @@ def read_file(filename):
 
 
 def read():
-    filename = "../input\\matrix.txt"
+    filename = "../NMLab1/lab2/input/matrix.txt"
     mtx_content = read_file(filename)
     return parse_input(mtx_content)

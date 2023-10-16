@@ -29,16 +29,13 @@ def gaussian(matrix, b_vector, eps):
         max_index = i + np.argmax(sub_column)
 
         if np.abs(matrix[i][max_index]) < eps:
-            print(matrix)
-            print(applied_matrices)
-            raise "Matrix is singular"
+            raise TypeError("Matrix is singular")
         p = get_permutation_matrix(n, i, max_index)
         matrix = np.dot(p, matrix)
         m = get_transformation_matrix(matrix, n, i)
         matrix = np.dot(m, matrix)
         applied_matrices.append(p)
         applied_matrices.append(m)
-    print(matrix)
     for to_apply in applied_matrices:
         b_vector = np.dot(to_apply, b_vector)
     x_vector = np.zeros(n)
