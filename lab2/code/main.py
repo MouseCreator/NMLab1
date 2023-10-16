@@ -5,6 +5,7 @@ import lab2.code.gaussian as gau
 import lab2.code.parser as par
 import lab2.code.jacobi as jac
 import lab2.code.seidel as sei
+import lab2.code.test as test
 
 
 def print_mtx(matrix, vector):
@@ -46,6 +47,7 @@ def calculate(config):
         raise "Unknown method"
     print("SOLUTION:")
     print(solution)
+    test.is_solution(matrix, vector, solution)
 
 
 # TODO: add autotest
@@ -63,3 +65,4 @@ if __name__ == "__main__":
     }
     #print_mtx_s(gen.generate_random_matrix_eigen_values_based(10), 10)
     calculate(config_map)
+
