@@ -6,6 +6,11 @@ def swap_rows(matrix, row1, row2):
     return matrix
 
 
+def test_eigen_values(matrix):
+    eigenvalues = np.linalg.eigvals(matrix)
+    return np.all(np.abs(eigenvalues) < 1)
+
+
 def find_and_swap(matrix, target, eps):
     n = matrix.shape[0]
     for j in range(n):
@@ -57,16 +62,10 @@ def jacobi(matrix, b, x0, eps):
                 if j == i:
                     continue
                 el_sum += matrix[i][j] * x_prev[j]
-            try:
                 x_cur[i] = (b[i] - el_sum) / matrix[i][i]
-            except Exception as e:
-                print(x_cur)
-                print(x_prev)
-                print(iters)
         difference = x_cur - x_prev
         difference_norm = np.linalg.norm(difference)
         if difference_norm < eps:
             print("ITERATIONS", iters)
             return x_cur
         x_prev = x_cur.copy()
-
