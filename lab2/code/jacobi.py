@@ -62,10 +62,3 @@ def jacobi(matrix, b, x0, eps):
             return x_cur
         x_prev = x_cur.copy()
 
-
-mtx = np.array([[3, -1, 1],
-                [-1, 2, 0.5],
-                [1, 0.5, 3]])
-bx = np.array([1, 1.75, 2.5])
-x = jacobi(mtx, bx, np.array([0, 0, 0]), 0.001)
-print(x)
