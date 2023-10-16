@@ -11,13 +11,21 @@ def print_mtx(matrix, vector):
     for row, v in zip(matrix, vector):
         print("\t".join(map(str, row)), "|", v)
 
+def print_mtx_s(matrix, n):
+    for i in range(n):
+        s = ""
+        for j in range(n):
+            s += str(matrix[i][j])
+            s += " "
+        print(s)
+
 
 def calculate(config):
     limit = config["LIMIT"]
     dim = config["DIMENSIONS"]
     if config["GENERATE"]:
-        matrix = gen.generate_random_matrix_diagonal_dominance(dim, limit)
-        vector = gen.generate_int_vector(dim, limit)
+        matrix = gen.generate_random_matrix_eigen_values_based(dim)
+        vector = gen.generate_vector(dim, 1.0)
     else:
         matrix, vector = par.read()
     if config["PRINT"]:
@@ -40,14 +48,18 @@ def calculate(config):
     print(solution)
 
 
+# TODO: add autotest
+# TODO: fix eigen values generator
+# TODO: (1,1,1) => calculate b => solve. Expect: (1, 1, 1). ||Actual - expected|| -> 0
 if __name__ == "__main__":
     config_map = {
-        "GENERATE": False,
-        "DIMENSIONS": 10,
+        "GENERATE": True,
+        "DIMENSIONS": 5,
         "PRINT": True,
         "TYPE": 4,
         "LIMIT": 100,
-        "METHOD": "J",
+        "METHOD": "S",
         "EPSILON": 0.0001
     }
+    #print_mtx_s(gen.generate_random_matrix_eigen_values_based(10), 10)
     calculate(config_map)

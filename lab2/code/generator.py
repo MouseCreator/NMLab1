@@ -19,7 +19,7 @@ def generate_random_matrix_diagonal_dominance(dim, lim=101):
 
 def generate_orthogonal_matrix(dim):
     random_matrix = np.random.randn(dim, dim)
-    q, r = np.linalg.qr(random_matrix, mode='reduced')
+    q, r = np.linalg.qr(random_matrix)
     return q
 
 
@@ -37,7 +37,11 @@ def generate_random_matrix_eigen_values_based(dim):
 
     diagonal_matrix = np.diag(eigenvalues)
     orthogonal_matrix = generate_orthogonal_matrix(dim)
-    return np.dot(np.dot(orthogonal_matrix, diagonal_matrix), orthogonal_matrix.T)
+    b = np.dot(np.dot(orthogonal_matrix, diagonal_matrix), orthogonal_matrix.T)
+
+    rand_diag = np.random.uniform(low = 0.01, high =0.9, size = dim)
+    d = np.diag(rand_diag)
+    return np.dot(d, b) + d
 
 
 def generate_hilbert_matrix(dim):
