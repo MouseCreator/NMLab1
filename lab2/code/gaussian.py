@@ -48,14 +48,3 @@ def gaussian(matrix, b_vector, eps):
             el_sum += matrix[i][j] * x_vector[j]
         x_vector[i] = b_vector[i] - el_sum
     return x_vector
-
-
-mtx = np.array([[10, 0, 3],
-                [3, -1, 0],
-                [-2, 4, 1]])
-print(gaussian(mtx, np.array([7, 2, 1]), 0.00001))
-
-mtx2 = np.array([[1, 2, 3],
-                [2, 5, 5],
-                [3, 5, 6]])
-print(gaussian(mtx2, np.array([1, 2, 3]), 0.00001))
