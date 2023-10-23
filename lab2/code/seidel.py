@@ -1,6 +1,7 @@
 import numpy as np
 
 from lab2.code.jacobi import to_non_zero_diagonal
+from lab2.code.jacobi import is_diagonally_dominant
 
 
 def seidel(matrix, b, x0, eps):
@@ -13,7 +14,7 @@ def seidel(matrix, b, x0, eps):
             el_sum = 0
             for j in range(i):
                 el_sum += matrix[i][j] * x_cur[j]
-            for j in range(i+1, n):
+            for j in range(i + 1, n):
                 el_sum += matrix[i][j] * x_prev[j]
             x_cur[i] = (b[i] - el_sum) / matrix[i][i]
         difference = x_cur - x_prev
@@ -22,3 +23,12 @@ def seidel(matrix, b, x0, eps):
             return x_cur
         x_prev = x_cur.copy()
 
+
+def is_symmetric_positive(matrix):
+    return np.array_equal(matrix, matrix.T) and np.min(np.linalg.eigvals(matrix)) > 0
+
+
+def test_seidel(matrix, eps):
+    can_perform = is_diagonally_dominant(matrix, eps) or is_symmetric_positive(matrix)
+    if not can_perform:
+        raise ValueError("Cannot perform Seidel algorithm")

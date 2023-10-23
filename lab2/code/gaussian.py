@@ -20,7 +20,7 @@ def get_transformation_matrix(matrix, n, i):
     return result_matrix
 
 
-def gaussian(matrix, b_vector, eps):
+def gaussian(matrix, b_vector, eps, do_test):
     assert matrix.shape[0] == matrix.shape[1]
     n = matrix.shape[0]
     applied_matrices = []
@@ -28,7 +28,7 @@ def gaussian(matrix, b_vector, eps):
         sub_column = matrix[i:, i]
         max_index = i + np.argmax(sub_column)
 
-        if np.abs(matrix[i][max_index]) < eps:
+        if do_test and np.abs(matrix[i][max_index]) < eps:
             raise TypeError("Matrix is singular")
         p = get_permutation_matrix(n, i, max_index)
         matrix = np.dot(p, matrix)

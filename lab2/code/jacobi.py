@@ -48,6 +48,12 @@ def is_diagonally_dominant(matrix, eps):
     return has_strict
 
 
+def test_jacobi(matrix, eps):
+    diag = is_diagonally_dominant(matrix, eps)
+    if not diag:
+        raise ValueError("Matrix is not diagonally dominant!")
+
+
 def jacobi(matrix, b, x0, eps):
     matrix = to_non_zero_diagonal(matrix, eps)
     n = matrix.shape[0]

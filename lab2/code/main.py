@@ -12,6 +12,7 @@ def print_mtx(matrix, vector):
     for row, v in zip(matrix, vector):
         print("\t".join(map(str, row)), "|", v)
 
+
 def print_mtx_s(matrix, n):
     for i in range(n):
         s = ""
@@ -23,10 +24,12 @@ def print_mtx_s(matrix, n):
 
 def calculate(config):
     limit = config["LIMIT"]
+    do_test = config["TEST"]
     dim = config["DIMENSIONS"]
     if config["GENERATE"]:
-        matrix = gen.generate_random_matrix_eigen_values_based(dim)
-        vector = gen.generate_vector(dim, 1.0)
+        matrix = gen.generate_hilbert_matrix(dim)
+        pre_solution = gen.generate_solution(dim, 3)
+        vector = gen.from_solution(matrix, pre_solution)
     else:
         matrix, vector = par.read()
     if config["PRINT"]:
@@ -38,31 +41,32 @@ def calculate(config):
     eps = config["EPSILON"]
     method = config["METHOD"]
     if method == "G":
-        solution = gau.gaussian(matrix, vector, eps)
+        solution = gau.gaussian(matrix, vector, eps, do_test)
     elif method == "J":
+        if do_test:
+            jac.test_jacobi(matrix, eps)
         solution = jac.jacobi(matrix, vector, x_begin, eps)
     elif method == "S":
+        if do_test:
+            sei.test_seidel(matrix)
         solution = sei.seidel(matrix, vector, x_begin, eps)
     else:
         raise "Unknown method"
     print("SOLUTION:")
     print(solution)
-    test.is_solution(matrix, vector, solution)
+    if config["GENERATE"]:
+        test.is_solution(matrix, vector, solution)
 
 
-# TODO: add autotest
-# TODO: fix eigen values generator
-# TODO: (1,1,1) => calculate b => solve. Expect: (1, 1, 1). ||Actual - expected|| -> 0
 if __name__ == "__main__":
     config_map = {
         "GENERATE": True,
-        "DIMENSIONS": 5,
-        "PRINT": True,
+        "DIMENSIONS": 50,
+        "PRINT": False,
         "TYPE": 4,
         "LIMIT": 100,
-        "METHOD": "S",
-        "EPSILON": 0.0001
+        "METHOD": "G",
+        "EPSILON": 1e-32,
+        "TEST": True,
     }
-    #print_mtx_s(gen.generate_random_matrix_eigen_values_based(10), 10)
     calculate(config_map)
-

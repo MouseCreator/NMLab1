@@ -59,3 +59,11 @@ def generate_vector(dim, lim=101):
 
 def generate_int_vector(dim, lim=101):
     return np.random.randint(low=-lim, high=lim, size=dim)
+
+
+def generate_solution(dim, fill):
+    return np.full(dim, fill)
+
+
+def from_solution(matrix, solution):
+    return np.dot(matrix, solution)
