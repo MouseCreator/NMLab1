@@ -63,11 +63,11 @@ def calculate(config):
 if __name__ == "__main__":
     config_map = {
         "GENERATE": True,
-        "DIMENSIONS": 10,
+        "DIMENSIONS": 100,
         "PRINT": False,
         "TYPE": 4,
         "LIMIT": 100,
-        "METHOD": "J",
+        "METHOD": "S",
         "EPSILON": 1e-5,
         "TEST": True,
     }

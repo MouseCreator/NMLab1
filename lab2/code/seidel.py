@@ -9,7 +9,9 @@ def seidel(matrix, b, x0, eps):
     n = matrix.shape[0]
     x_prev = x0
     x_cur = np.zeros(n)
+    iters = 0
     while True:
+        iters += 1
         for i in range(n):
             el_sum = 0
             for j in range(i):
@@ -20,6 +22,7 @@ def seidel(matrix, b, x0, eps):
         difference = x_cur - x_prev
         difference_norm = np.linalg.norm(difference)
         if difference_norm < eps:
+            print("ITERATIONS", iters)
             return x_cur
         x_prev = x_cur.copy()
 

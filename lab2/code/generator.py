@@ -19,7 +19,7 @@ def generate_random_matrix_diagonal_dominance(dim, lim=101):
 
 def generate_random_matrix_significant_diagonal_dominance(dim, lim=101):
     matrix = np.random.rand(dim, dim) * lim
-    diagonal_elements = np.sum(np.abs(matrix), axis=1) + (np.random.rand(dim) * (lim + 30) + 50)
+    diagonal_elements = 1.7 * np.sum(np.abs(matrix), axis=1) + (np.random.rand(dim) * lim) * 1.5
     np.fill_diagonal(matrix, diagonal_elements)
 
     return matrix
