@@ -26,9 +26,9 @@ def calculate(config):
     limit = config["LIMIT"]
     do_test = config["TEST"]
     dim = config["DIMENSIONS"]
+    pre_solution = gen.generate_solution(dim, 3)
     if config["GENERATE"]:
         matrix = gen.generate_hilbert_matrix(dim)
-        pre_solution = gen.generate_solution(dim, 3)
         vector = gen.from_solution(matrix, pre_solution)
     else:
         matrix, vector = par.read()
@@ -48,7 +48,7 @@ def calculate(config):
         solution = jac.jacobi(matrix, vector, x_begin, eps)
     elif method == "S":
         if do_test:
-            sei.test_seidel(matrix)
+            sei.test_seidel(matrix, eps)
         solution = sei.seidel(matrix, vector, x_begin, eps)
     else:
         raise "Unknown method"
@@ -56,6 +56,7 @@ def calculate(config):
     print(solution)
     if config["GENERATE"]:
         test.is_solution(matrix, vector, solution)
+        test.compare(pre_solution, solution)
 
 
 if __name__ == "__main__":
@@ -66,7 +67,7 @@ if __name__ == "__main__":
         "TYPE": 4,
         "LIMIT": 100,
         "METHOD": "G",
-        "EPSILON": 1e-32,
-        "TEST": True,
+        "EPSILON": 1e-5,
+        "TEST": False,
     }
     calculate(config_map)
