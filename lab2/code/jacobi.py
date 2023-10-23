@@ -31,7 +31,7 @@ def to_non_zero_diagonal(matrix, eps):
     return matrix
 
 
-def find_Q(matrix, eps):
+def find_q(matrix, eps):
     n = matrix.shape[0]
     q = 0
     for i in range(n):

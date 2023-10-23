@@ -45,7 +45,7 @@ def calculate(config):
     elif method == "J":
         if do_test:
             jac.test_jacobi(matrix, eps)
-        print(jac.find_Q(matrix, eps))
+        print(jac.find_q(matrix, eps))
         solution = jac.jacobi(matrix, vector, x_begin, eps)
     elif method == "S":
         if do_test:
