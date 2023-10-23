@@ -31,6 +31,25 @@ def to_non_zero_diagonal(matrix, eps):
     return matrix
 
 
+def find_Q(matrix, eps):
+    n = matrix.shape[0]
+    q = 0
+    for i in range(n):
+        diag = np.abs(matrix[i][i])
+        el_sum = 0
+        for j in range(n):
+            if i == j:
+                continue
+            el_sum += np.abs(matrix[i][j])
+        if diag < el_sum:
+            return 1
+        if diag - eps > el_sum:
+            q = max(q, el_sum / diag)
+    if q == 0:
+        q = 1
+    return q
+
+
 def is_diagonally_dominant(matrix, eps):
     n = matrix.shape[0]
     has_strict = False

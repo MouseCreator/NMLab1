@@ -28,7 +28,7 @@ def calculate(config):
     dim = config["DIMENSIONS"]
     pre_solution = gen.generate_solution(dim, 3)
     if config["GENERATE"]:
-        matrix = gen.generate_hilbert_matrix(dim)
+        matrix = gen.generate_random_matrix_significant_diagonal_dominance(dim)
         vector = gen.from_solution(matrix, pre_solution)
     else:
         matrix, vector = par.read()
@@ -45,6 +45,7 @@ def calculate(config):
     elif method == "J":
         if do_test:
             jac.test_jacobi(matrix, eps)
+        print(jac.find_Q(matrix, eps))
         solution = jac.jacobi(matrix, vector, x_begin, eps)
     elif method == "S":
         if do_test:
@@ -62,12 +63,12 @@ def calculate(config):
 if __name__ == "__main__":
     config_map = {
         "GENERATE": True,
-        "DIMENSIONS": 50,
+        "DIMENSIONS": 10,
         "PRINT": False,
         "TYPE": 4,
         "LIMIT": 100,
-        "METHOD": "G",
+        "METHOD": "J",
         "EPSILON": 1e-5,
-        "TEST": False,
+        "TEST": True,
     }
     calculate(config_map)

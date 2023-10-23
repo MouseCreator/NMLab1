@@ -11,7 +11,15 @@ def generate_random_int_matrix(dim, lim=101):
 
 def generate_random_matrix_diagonal_dominance(dim, lim=101):
     matrix = np.random.rand(dim, dim) * lim
-    diagonal_elements = np.sum(np.abs(matrix), axis=1) + np.random.rand(dim) * dim
+    diagonal_elements = np.sum(np.abs(matrix), axis=1) + np.random.rand(dim) * lim
+    np.fill_diagonal(matrix, diagonal_elements)
+
+    return matrix
+
+
+def generate_random_matrix_significant_diagonal_dominance(dim, lim=101):
+    matrix = np.random.rand(dim, dim) * lim
+    diagonal_elements = np.sum(np.abs(matrix), axis=1) + (np.random.rand(dim) * (lim + 30) + 50)
     np.fill_diagonal(matrix, diagonal_elements)
 
     return matrix
@@ -39,7 +47,7 @@ def generate_random_matrix_eigen_values_based(dim):
     orthogonal_matrix = generate_orthogonal_matrix(dim)
     b = np.dot(np.dot(orthogonal_matrix, diagonal_matrix), orthogonal_matrix.T)
 
-    rand_diag = np.random.uniform(low = 0.01, high =0.9, size = dim)
+    rand_diag = np.random.uniform(low=0.01, high=0.9, size=dim)
     d = np.diag(rand_diag)
     return np.dot(d, b) + d
 
