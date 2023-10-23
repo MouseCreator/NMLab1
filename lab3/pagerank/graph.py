@@ -43,10 +43,8 @@ def perform(num,eps):
     print_edges(G)
     mtx = to_matrix(G)
     print(mtx)
-    lb = find_max_eigen_value(mtx, eps)
     lb2 = find_max_eigen_value_scalar(mtx, eps)
-    actual = np.max(np.linalg.eigvals(mtx))
-    print(lb, lb2, actual)
+    print(lb2)
     x = find_eigen_vector(mtx, eps)
     print(x)
 
