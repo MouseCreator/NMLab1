@@ -6,14 +6,28 @@ def exp_method(matrix, vector, coord, eps):
         raise ValueError("M coordinate must fit in vector!")
     if np.abs(vector[coord]) < eps:
         raise ValueError("The leading coordinate is zero")
-    x_prev = vector.copy()
+    x_prev = vector
     max_eigen_value = 0
     while True:
         x_curr = np.dot(matrix, x_prev)
         lambda_prev = max_eigen_value
         max_eigen_value = x_curr[coord] / x_prev[coord]
-        if np.abs(max_eigen_value - lambda_prev) < eps:
+        diff = np.abs(max_eigen_value - lambda_prev)
+        if diff < eps:
             return max_eigen_value
+        x_prev = x_curr.copy()
+
+
+def exp_method_vector(matrix, vector, coord, eps):
+    if coord > len(vector):
+        raise ValueError("M coordinate must fit in vector!")
+    if np.abs(vector[coord]) < eps:
+        raise ValueError("The leading coordinate is zero")
+    x_prev = vector.copy()
+    while True:
+        x_curr = np.dot(matrix, x_prev)
+        if np.linalg.norm(x_curr - x_prev) < eps:
+            return x_curr
         x_prev = x_curr.copy()
 
 
@@ -39,8 +53,14 @@ def find_max_eigen_value(matrix, eps):
     return exp_method(matrix, vector, coord, eps)
 
 
-def find_max_eigen_value_scalar(matrix, eps):
+def find_eigen_vector(matrix, eps):
     dim = matrix.shape[0]
     vector = np.ones(dim)
     coord = 0
-    return exp_method(matrix, vector, coord, eps)
+    return exp_method_vector(matrix, vector, coord, eps)
+
+
+def find_max_eigen_value_scalar(matrix, eps):
+    dim = matrix.shape[0]
+    vector = np.ones(dim)
+    return exp_scalar_method(matrix, vector, eps)
