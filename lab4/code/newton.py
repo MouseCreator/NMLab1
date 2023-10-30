@@ -32,7 +32,6 @@ def update_solution(x_curr, z):
     return result
 
 
-
 def newton_calc(functions, variables, jacobian, eps):
     x_init = initial_solution(variables)
     x_curr = x_init
@@ -62,4 +61,27 @@ def test_newton():
     print(solution)
 
 
-test_newton()
+def create_function(variables, n, i):
+    f = -n
+    j = 0
+    for v in variables:
+        if j == i:
+            f += v ** 3
+        else:
+            f += v ** 2
+        j += 1
+    return f
+
+
+def test_newton_n_space(n):
+    variables = [sp.symbols(f'x_{i}') for i in range(1, n + 1)]
+    functions = []
+    for i in range(n):
+        f = create_function(variables, n, i)
+        functions.append(f)
+    eps = 1e-5
+    solution = newton(functions, variables, eps)
+    print(solution)
+
+
+test_newton_n_space(10)
