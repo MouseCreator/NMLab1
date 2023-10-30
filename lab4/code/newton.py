@@ -50,13 +50,12 @@ def newton(functions, variables, eps):
     return newton_calc(functions, variables, jacobian, eps)
 
 
-def test_newton():
+def test_newton(eps):
     x, y = sp.symbols('x y')
     f1 = x ** 2 - 2 * x * y + 1
     f2 = x ** 2 + y ** 2 - 2
     funcs = [f1, f2]
     vars = [x, y]
-    eps = 1e-5
     solution = newton(funcs, vars, eps)
     print(solution)
 
@@ -73,15 +72,14 @@ def create_function(variables, n, i):
     return f
 
 
-def test_newton_n_space(n):
+def test_newton_n_space(n, eps):
     variables = [sp.symbols(f'x_{i}') for i in range(1, n + 1)]
     functions = []
     for i in range(n):
         f = create_function(variables, n, i)
         functions.append(f)
-    eps = 1e-5
     solution = newton(functions, variables, eps)
     print(solution)
 
 
-test_newton_n_space(10)
+test_newton_n_space(10, 1e-5)
