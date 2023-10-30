@@ -40,27 +40,24 @@ def generate_sample_graph():
 
 
 def generate_graph(num):
-    G = nx.DiGraph()
+    graph = nx.DiGraph()
 
-    # Create nodes with input and output edges
     for node in range(num):
-        # Add the node to the graph
-        G.add_node(node)
+        graph.add_node(node)
 
-        # Add random input and output edges
-        num_inputs = random.randint(1, num - 1)  # Random number of input edges (excluding self-loop)
+        num_inputs = random.randint(1, num - 1)
         for _ in range(num_inputs):
-            source = random.choice(range(num))  # Random source node
-            if source != node and not G.has_edge(source, node):
-                G.add_edge(source, node)
+            source = random.choice(range(num))
+            if source != node and not graph.has_edge(source, node):
+                graph.add_edge(source, node)
 
-        num_outputs = random.randint(1, num - 1)  # Random number of output edges (excluding self-loop)
+        num_outputs = random.randint(1, num - 1)
         for _ in range(num_outputs):
-            target = random.choice(range(num))  # Random target node
-            if target != node and not G.has_edge(node, target):
-                G.add_edge(node, target)
+            target = random.choice(range(num))
+            if target != node and not graph.has_edge(node, target):
+                graph.add_edge(node, target)
 
-    return G
+    return graph
 
 
 def print_edges(G):
