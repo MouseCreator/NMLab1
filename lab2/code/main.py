@@ -28,7 +28,7 @@ def calculate(config):
     dim = config["DIMENSIONS"]
     pre_solution = gen.generate_solution(dim, 3)
     if config["GENERATE"]:
-        matrix = gen.generate_random_matrix_significant_diagonal_dominance(dim)
+        matrix = gen.generate_hilbert_matrix(dim)
         vector = gen.from_solution(matrix, pre_solution)
     else:
         matrix, vector = par.read()
@@ -63,12 +63,12 @@ def calculate(config):
 if __name__ == "__main__":
     config_map = {
         "GENERATE": True,
-        "DIMENSIONS": 100,
+        "DIMENSIONS": 10,
         "PRINT": False,
         "TYPE": 4,
         "LIMIT": 100,
         "METHOD": "S",
-        "EPSILON": 1e-5,
+        "EPSILON": 1e-6,
         "TEST": True,
     }
     calculate(config_map)

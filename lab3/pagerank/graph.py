@@ -4,6 +4,8 @@ import random
 from exponent_method import find_max_eigen_value
 from exponent_method import find_max_eigen_value_scalar
 from exponent_method import find_eigen_vector
+from exponent_method import find_eigen_vector_equal_magnitude
+from exponent_method import find_eigen_vector_auto
 
 
 def to_matrix(graph):
@@ -45,7 +47,7 @@ def perform(num,eps):
     print(mtx)
     lb2 = find_max_eigen_value_scalar(mtx, eps)
     print(lb2)
-    x = find_eigen_vector(mtx, eps)
+    x = find_eigen_vector_auto(mtx, eps)
     print(x)
 
 
