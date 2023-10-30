@@ -1,4 +1,5 @@
 from graph import perform
+from graph import perform_generated
 
 if __name__ == "__main__":
-    perform(4, 1e-8)
+    perform_generated(5, 1e-8)
