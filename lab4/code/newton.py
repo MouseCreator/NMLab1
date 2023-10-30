@@ -71,7 +71,7 @@ def max_f(functions, x_init):
     return max_val
 
 
-def test_solvable(functions, jacobian, x_init, eps=1e-6):
+def is_solvable(functions, jacobian, x_init, eps=1e-6):
     a = np.array(jacobian.subs(x_init)).astype(float)
     n = len(functions)
     if np.abs(np.linalg.det(a)) < eps:
@@ -114,7 +114,7 @@ def test_newton(eps=1e-6):
     print(solution)
 
 
-def is_solvable(eps=1e-6):
+def test_is_solvable(eps=1e-6):
     x, y = sp.symbols('x y')
     f1 = x - 0.5 * sp.sin((x - y) / 2)
     f2 = y - 0.5 * sp.cos((x + y) / 2)
@@ -122,4 +122,4 @@ def is_solvable(eps=1e-6):
     variables = [x, y]
     jacobian = find_jacobian(funcs, variables)
     x_init = initial_solution(variables, 0)
-    print("Solvable?", test_solvable(funcs, jacobian, x_init, eps))
+    print("Solvable?", is_solvable(funcs, jacobian, x_init, eps))
