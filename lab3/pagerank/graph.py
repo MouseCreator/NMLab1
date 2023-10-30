@@ -89,3 +89,21 @@ def perform_generated(num, eps):
     x = find_eigen_vector_auto(mtx, eps)
     print("Eigen vector:", x)
     print("The most important nodes are:", max_indexes(x, eps))
+
+
+def modified(num, eps):
+    G = generate_graph(num)
+    print_edges(G)
+
+    a_mtx = to_matrix(G)
+    b_mtx = np.full((num, num), 1/num)
+    alpha = 0.85
+
+    m = a_mtx * alpha + b_mtx * (1 - alpha)
+
+    print(m)
+    lb2 = find_max_eigen_value_scalar(m, eps)
+    print("Max eigen value:", lb2)
+    x = find_eigen_vector_auto(m, eps)
+    print("Eigen vector:", x)
+    print("The most important nodes are:", max_indexes(x, eps))
