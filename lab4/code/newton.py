@@ -32,7 +32,7 @@ def update_solution(x_curr, z):
     return result
 
 
-def newton_calc(functions, variables, jacobian, eps):
+def newton_calc(functions, variables, jacobian, eps=1e-6):
     x_init = initial_solution(variables, 0.25)
     x_curr = x_init
     while True:
@@ -45,7 +45,7 @@ def newton_calc(functions, variables, jacobian, eps):
     return x_curr
 
 
-def newton(functions, variables, eps):
+def newton(functions, variables, eps=1e-6):
     jacobian = find_jacobian(functions, variables)
     return newton_calc(functions, variables, jacobian, eps)
 
@@ -71,7 +71,7 @@ def max_f(functions, x_init):
     return max_val
 
 
-def test_solvable(functions, jacobian, x_init, eps):
+def test_solvable(functions, jacobian, x_init, eps=1e-6):
     a = np.array(jacobian.subs(x_init)).astype(float)
     n = len(functions)
     if np.abs(np.linalg.det(a)) < eps:
@@ -94,7 +94,7 @@ def create_function(variables, n, i):
     return f
 
 
-def test_newton_n_space(n, eps):
+def test_newton_n_space(n, eps=1e-6):
     variables = [sp.symbols(f'x_{i}') for i in range(1, n + 1)]
     functions = []
     for i in range(n):
@@ -104,7 +104,7 @@ def test_newton_n_space(n, eps):
     print(solution)
 
 
-def test_newton(eps):
+def test_newton(eps=1e-6):
     x, y = sp.symbols('x y')
     f1 = x ** 2 - 2 * x * y + 1
     f2 = x ** 2 + y ** 2 - 2
@@ -114,7 +114,7 @@ def test_newton(eps):
     print(solution)
 
 
-def is_solvable():
+def is_solvable(eps=1e-6):
     x, y = sp.symbols('x y')
     f1 = x - 0.5 * sp.sin((x - y) / 2)
     f2 = y - 0.5 * sp.cos((x + y) / 2)
@@ -122,7 +122,4 @@ def is_solvable():
     variables = [x, y]
     jacobian = find_jacobian(funcs, variables)
     x_init = initial_solution(variables, 0)
-    print("Solvable?", test_solvable(funcs, jacobian, x_init, 1e-5))
-
-
-is_solvable()
+    print("Solvable?", test_solvable(funcs, jacobian, x_init, eps))
