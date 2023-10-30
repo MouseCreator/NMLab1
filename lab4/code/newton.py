@@ -2,7 +2,7 @@ import numpy as np
 import sympy as sp
 
 
-def find_Jacobian(functions, variables):
+def find_jacobian(functions, variables):
     return sp.Matrix([[sp.diff(f, var) for var in variables] for f in functions])
 
 
@@ -46,8 +46,10 @@ def newton_calc(functions, variables, jacobian, eps):
 
 
 def newton(functions, variables, eps):
-    jacobian = find_Jacobian(functions, variables)
+    jacobian = find_jacobian(functions, variables)
     return newton_calc(functions, variables, jacobian, eps)
+
+
 def max_second_derivative(functions, x_init):
     max_val = 0
     for f in functions:
@@ -70,14 +72,14 @@ def max_f(functions, x_init):
 
 
 def test_solvable(functions, jacobian, x_init, eps):
-    A = np.array(jacobian.subs(x_init)).astype(float)
+    a = np.array(jacobian.subs(x_init)).astype(float)
     n = len(functions)
-    if np.abs(np.linalg.det(A)) < eps:
+    if np.abs(np.linalg.det(a)) < eps:
         return False
-    L = max_second_derivative(functions, x_init)
-    M = np.linalg.norm(np.linalg.inv(A), ord=2)
-    D = max_f(functions, x_init)
-    return np.abs(M * M * L * D * n * n - 1/2) < eps
+    l_par = max_second_derivative(functions, x_init)
+    m_par = np.linalg.norm(np.linalg.inv(a), ord=2)
+    d_par = max_f(functions, x_init)
+    return np.abs(m_par * m_par * l_par * d_par * n * n - 0.5) < eps
 
 
 def create_function(variables, n, i):
@@ -101,25 +103,26 @@ def test_newton_n_space(n, eps):
     solution = newton(functions, variables, eps)
     print(solution)
 
+
 def test_newton(eps):
     x, y = sp.symbols('x y')
     f1 = x ** 2 - 2 * x * y + 1
     f2 = x ** 2 + y ** 2 - 2
     funcs = [f1, f2]
-    vars = [x, y]
-    solution = newton(funcs, vars, eps)
+    variables = [x, y]
+    solution = newton(funcs, variables, eps)
     print(solution)
+
 
 def is_solvable():
     x, y = sp.symbols('x y')
-    f1 = x - 0.5 * sp.sin((x-y)/2)
-    f2 = y - 0.5 * sp.cos((x+y)/2)
+    f1 = x - 0.5 * sp.sin((x - y) / 2)
+    f2 = y - 0.5 * sp.cos((x + y) / 2)
     funcs = [f1, f2]
-    vars = [x, y]
-    J = find_Jacobian(funcs, vars)
-    x_init = initial_solution(vars, 0)
-    print("Solvable?", test_solvable(funcs, J, x_init, 1e-5))
+    variables = [x, y]
+    jacobian = find_jacobian(funcs, variables)
+    x_init = initial_solution(variables, 0)
+    print("Solvable?", test_solvable(funcs, jacobian, x_init, 1e-5))
 
 
 is_solvable()
-
