@@ -77,6 +77,11 @@ def relaxation(functions, variables, x_init, eps):
     return x_curr
 
 
+def is_solvable(functions, variables, x_init):
+    tau = estimate_tau(functions, variables, x_init)
+    return tau < 1.0
+
+
 def test_relaxation_n_space(n, eps=1e-6):
     variables = [sp.symbols(f'x_{i}') for i in range(1, n + 1)]
     functions = []
@@ -97,3 +102,17 @@ def test_relaxation(eps=1e-6):
     init = initial_solution(variables, 0.75)
     solution = relaxation(funcs, variables, init, eps)
     print(solution)
+
+
+def test_iter_is_solvable():
+    x, y = sp.symbols('x y')
+    f1 = x ** 2 - 2 * x * y + 1
+    f2 = x ** 2 + y ** 2 - 2
+    funcs = [f1, f2]
+    variables = [x, y]
+    init = initial_solution(variables, 0.75)
+    s = is_solvable(funcs, variables, init)
+    if s:
+        print("Solvable: True")
+    else:
+        print("Solvable: False")
