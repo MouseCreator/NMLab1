@@ -19,7 +19,6 @@ def to_regular_vector(x_init):
 def to_dictionary(x_init, x):
     x_p = x_init.copy()
     if len(x) == len(x_p):
-        # Iterate through the dictionary keys and update the values
         for key, new_value in zip(x_p.keys(), x):
             x_p[key] = new_value
         return x_p
@@ -93,5 +92,3 @@ def test_relaxation(eps=1e-6):
     solution = relaxation(funcs, variables, init, eps)
     print(solution)
 
-
-test_relaxation()
