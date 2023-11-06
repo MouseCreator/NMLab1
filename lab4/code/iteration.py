@@ -34,7 +34,6 @@ def generate_bounds(x_j, delta):
 
 
 def estimate_tau(functions, variables, x_init, delta=10):
-    delta_vector = np.full(len(x_init.values()), delta)
     x_j = to_regular_vector(x_init)
 
     jacobian = find_jacobian(functions, variables)
@@ -81,7 +80,7 @@ def relaxation(functions, variables, x_init, eps):
 def test_relaxation_n_space(n, eps=1e-6):
     variables = [sp.symbols(f'x_{i}') for i in range(1, n + 1)]
     functions = []
-    init = initial_solution(variables, 1)
+    init = initial_solution(variables, 0.5)
     for i in range(n):
         f = create_function(variables, n, i)
         functions.append(f)
