@@ -33,7 +33,7 @@ def generate_bounds(x_j, delta):
     return np.array(bounds)
 
 
-def estimate_tau(functions, variables, x_init, delta=10):
+def estimate_tau(functions, variables, x_init, delta=1):
     x_j = to_regular_vector(x_init)
 
     jacobian = find_jacobian(functions, variables)

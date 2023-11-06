@@ -3,4 +3,4 @@ from graph import perform_generated
 from graph import modified
 
 if __name__ == "__main__":
-    perform(1e-8)
+    modified(8, 1e-8)
