@@ -26,19 +26,26 @@ def to_dictionary(x_init, x):
         raise ValueError("The length of new_values does not match the number of keys in the dictionary.")
 
 
+def generate_bounds(x_j, delta):
+    bounds = []
+    for x_i in x_j:
+        bounds.append([x_i - delta, x_i + delta])
+    return np.array(bounds)
+
+
 def estimate_tau(functions, variables, x_init, delta=10):
-    delta_vector = np.full(len(x_init), delta)
+    delta_vector = np.full(len(x_init.values()), delta)
     x_j = to_regular_vector(x_init)
-    from_x = x_j - delta_vector
-    to_x = x_j + delta_vector
 
     jacobian = find_jacobian(functions, variables)
+    bounds = generate_bounds(x_j, delta)
 
     def neg_jacobian_norm(x):
         y = to_dictionary(x_init, x)
         jm = np.array(jacobian.subs(y)).astype(float)
         return -np.linalg.norm(jm)
-    result = minimize(neg_jacobian_norm, x0=x_j, bounds=[from_x, to_x])
+
+    result = minimize(neg_jacobian_norm, x0=x_j, bounds=bounds)
 
     return -2.0 / result.fun
 
@@ -91,4 +98,3 @@ def test_relaxation(eps=1e-6):
     init = initial_solution(variables, 0.75)
     solution = relaxation(funcs, variables, init, eps)
     print(solution)
-

@@ -2,6 +2,7 @@ from newton import test_newton
 from newton import test_newton_n_space
 from newton import test_is_solvable
 from iteration import test_relaxation
+from iteration import test_relaxation_n_space
 
 if __name__ == "__main__":
     eps = 1e-5
@@ -13,3 +14,5 @@ if __name__ == "__main__":
     test_is_solvable(eps)
     print("Relaxation method 2x2")
     test_relaxation(eps)
+    print("Relaxation method 10x10")
+    test_relaxation_n_space(10, eps)
