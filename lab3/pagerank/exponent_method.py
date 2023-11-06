@@ -124,3 +124,10 @@ def find_eigen_vector_auto(matrix, eps):
         return find_eigen_vector_equal_magnitude(matrix, eps)
     else:
         return find_eigen_vector(matrix, eps)
+
+
+def find_max_eigen_value_auto(matrix, eps):
+    if is_eigen_value(matrix, -1, eps):
+        return exp_method_equal_magnitude(matrix, eps)
+    else:
+        return find_max_eigen_value(matrix, eps)

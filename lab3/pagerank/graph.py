@@ -6,6 +6,7 @@ from exponent_method import find_max_eigen_value_scalar
 from exponent_method import find_eigen_vector
 from exponent_method import find_eigen_vector_equal_magnitude
 from exponent_method import find_eigen_vector_auto
+from exponent_method import find_max_eigen_value_auto
 
 
 def max_indexes(arr, eps):
@@ -67,12 +68,14 @@ def print_edges(G):
     return G
 
 
+
+
 def perform(eps):
     G = generate_sample_graph()
     print_edges(G)
     mtx = to_matrix(G)
     print(mtx)
-    lb2 = find_max_eigen_value_scalar(mtx, eps)
+    lb2 = find_max_eigen_value_auto(mtx, eps)
     print(lb2)
     x = find_eigen_vector_auto(mtx, eps)
     print(x)
