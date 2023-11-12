@@ -12,7 +12,8 @@ def init_and_plot():
     a = -1
     b = 1
     n = 3
-    plot(x, expr, a, b, n)
+    strategy = 'Optimal'
+    plot(x, expr, a, b, n, strategy)
 
 
 def add_to_plot(x, expr, a, b, name):
@@ -34,18 +35,23 @@ def init_plot():
     plt.title('Plot of the Function f(x)')
 
 
-def plot(x, expr, a, b, n):
-    optimal_values = pr.optimal_values(expr, a, b, n)
+def plot(x, expr, a, b, n, strategy='Optimal'):
+    if strategy == 'Optimal':
+        chosen_vals = pr.optimal_values(expr, a, b, n)
+    elif strategy == 'Even':
+        chosen_vals = pr.even_values(expr, a, b, n)
+    else:
+        raise ValueError('Unknown strategy!')
 
     init_plot()
 
     add_to_plot(x, expr, a, b, 'Initial function')
-    newton = nw.newton_interpolation(optimal_values)
+    newton = nw.newton_interpolation(chosen_vals)
     add_to_plot(x, newton, a, b, 'Newton')
-    lagrange = lg.lagrange_interpolation(optimal_values)
+    lagrange = lg.lagrange_interpolation(chosen_vals)
     add_to_plot(x, lagrange, a, b, 'Lagrange')
 
-    add_points(optimal_values)
+    add_points(chosen_vals)
     plt.grid(True)
     plt.legend()
     plt.show()
