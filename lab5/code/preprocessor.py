@@ -13,12 +13,14 @@ def nth_derivative_at_x0(expr_str, n, x0):
 def optimal_values(function, a, b, n, rank=0):
     if a > b:
         raise ValueError("Illegal range!")
-    vals_arr = []
+    vals_arr = [to_add(function, a, rank)]
     ab_sum = (a + b) / 2
     ab_diff = (b - a) / 2
-    for i in range(n):
-        x = ab_sum + ab_diff * np.cos((2 * i + 1) * np.pi / (2 * (n + 1)))
-        to_add(function, x, rank)
+    m = n - 2
+    for i in range(m):
+        x = ab_sum + ab_diff * np.cos((2 * i + 1) * np.pi / (2 * (m + 1)))
+        vals_arr.append(to_add(function, x, rank))
+    vals_arr.append(to_add(function, b, rank))
     return vals_arr
 
 
@@ -42,5 +44,5 @@ def to_add(function, x, rank):
     f = v.at(function, x)
     arr = [x, f]
     for j in range(rank):
-        arr.append(nth_derivative_at_x0(function, x, j + 1))
+        arr.append(nth_derivative_at_x0(function, x, j))
     return v.Val(arr)

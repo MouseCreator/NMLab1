@@ -4,6 +4,7 @@ import sympy as sp
 import preprocessor as pr
 import newton as nw
 import lagrange as lg
+import spline as sl
 
 
 def init_and_plot():
@@ -12,7 +13,7 @@ def init_and_plot():
     a = -1
     b = 1
     n = 3
-    strategy = 'Optimal'
+    strategy = 'Even'
     plot(x, expr, a, b, n, strategy)
 
 
@@ -35,11 +36,26 @@ def init_plot():
     plt.title('Plot of the Function f(x)')
 
 
+def plot_spline(spline_map):
+    num_points = 1000
+    x = sp.symbols('x')
+    f = False
+    for (x1, x2), expr in spline_map.items():
+        numpy_function = sp.lambdify(x, expr, 'numpy')
+        x_range = np.linspace(x1, x2, num_points)
+        y_values = numpy_function(x_range)
+        if f:
+            plt.plot(x_range, y_values, color='violet')
+        else:
+            f = True
+            plt.plot(x_range, y_values, color='violet', label='Spline')
+
+
 def plot(x, expr, a, b, n, strategy='Optimal'):
     if strategy == 'Optimal':
-        chosen_vals = pr.optimal_values(expr, a, b, n, 3)
+        chosen_vals = pr.optimal_values(expr, a, b, n)
     elif strategy == 'Even':
-        chosen_vals = pr.even_values(expr, a, b, n, 3)
+        chosen_vals = pr.even_values(expr, a, b, n)
     else:
         raise ValueError('Unknown strategy!')
 
@@ -50,6 +66,8 @@ def plot(x, expr, a, b, n, strategy='Optimal'):
     add_to_plot(x, newton, a, b, 'Newton')
     lagrange = lg.lagrange_interpolation(chosen_vals)
     add_to_plot(x, lagrange, a, b, 'Lagrange')
+    spline = sl.spline_interpolation(chosen_vals)
+    plot_spline(spline)
 
     add_points(chosen_vals)
     plt.grid(True)
