@@ -37,9 +37,9 @@ def init_plot():
 
 def plot(x, expr, a, b, n, strategy='Optimal'):
     if strategy == 'Optimal':
-        chosen_vals = pr.optimal_values(expr, a, b, n)
+        chosen_vals = pr.optimal_values(expr, a, b, n, 3)
     elif strategy == 'Even':
-        chosen_vals = pr.even_values(expr, a, b, n)
+        chosen_vals = pr.even_values(expr, a, b, n, 3)
     else:
         raise ValueError('Unknown strategy!')
 
