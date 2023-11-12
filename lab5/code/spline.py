@@ -70,6 +70,9 @@ def to_full_vector(m_v):
 
 
 def spline_interpolation(vals):
+    if len(vals) < 2:
+        print("Not enough points for spline interpolation!")
+        return {}
     x = sp.symbols('x')
     a_matrix = define_a(vals)
     h_matrix = define_h(vals)

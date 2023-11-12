@@ -12,15 +12,20 @@ def init_and_plot():
     expr = 3 ** x
     a = -1
     b = 1
-    n = 4
-    strategy = 'O'
+    n = 2
+    strategy = 'E'
     plot(x, expr, a, b, n, strategy)
 
 
 def add_to_plot(x, expr, a, b, name):
-    numpy_function = sp.lambdify(x, expr, 'numpy')
-    x_values = np.linspace(a, b, 1000)
-    y_values = numpy_function(x_values)
+    if isinstance(expr, sp.Expr) and not expr.free_symbols:
+        const_value = float(expr.evalf())
+        x_values = np.linspace(a, b, 1000)
+        y_values = np.full(1000, const_value)
+    else:
+        numpy_function = sp.lambdify(x, expr, 'numpy')
+        x_values = np.linspace(a, b, 1000)
+        y_values = numpy_function(x_values)
     plt.plot(x_values, y_values, label=name)
 
 
@@ -52,6 +57,8 @@ def plot_spline(spline_map):
 
 
 def plot(x, expr, a, b, n, strategy='Optimal'):
+    if n < 1:
+        raise ValueError("Not enough points!")
     if strategy == 'Optimal' or strategy == 'O':
         chosen_vals = pr.optimal_values(expr, a, b, n)
     elif strategy == 'Even' or strategy == 'E':

@@ -31,7 +31,8 @@ def even_values(function, a, b, n, rank=0):
     vals_arr = []
     if n == 1:
         x = (a + b) / 2
-        to_add(function, x, rank)
+        vals_arr.append(to_add(function, x, rank))
+        return vals_arr
     step = (b - a) / (n - 1)
     curr = a
     for i in range(n):
