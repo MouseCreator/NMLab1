@@ -54,7 +54,7 @@ def plot(x, expr, a, b, n, strategy='Optimal'):
     add_points(chosen_vals)
     plt.grid(True)
     plt.legend()
-    plt.show()
+    plt.savefig('lab5/result/plot.png', dpi=300, bbox_inches='tight')
 
 
 init_and_plot()

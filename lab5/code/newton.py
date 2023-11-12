@@ -47,5 +47,3 @@ def test():
     p = newton_interpolation([v1, v2, v3])
     print(p)
 
-
-test()
