@@ -10,11 +10,9 @@ def lagrange_interpolation(vals):
     x = sp.symbols('x')
     v_prod = v_product(vals, x)
     polynomial = 0
-    k = 0
     for val in vals:
-        v_prod_curr = v_product_except(v_prod, x, vals[k])
+        v_prod_curr = v_product_except(v_prod, x, val)
         polynomial = polynomial + (v_prod_curr * val.function()) / (v.at(v_prod_curr, val.argument()))
-        k += 1
     return v.simplify(polynomial)
 
 

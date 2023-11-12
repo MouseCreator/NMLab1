@@ -21,7 +21,8 @@ def optimal_values(function, a, b, n, rank=0):
         x = ab_sum + ab_diff * np.cos((2 * i + 1) * np.pi / (2 * (m + 1)))
         vals_arr.append(to_add(function, x, rank))
     vals_arr.append(to_add(function, b, rank))
-    return vals_arr
+    sorted_val_array = sorted(vals_arr, key=lambda val: val.argument())
+    return sorted_val_array
 
 
 def even_values(function, a, b, n, rank=0):

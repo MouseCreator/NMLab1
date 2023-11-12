@@ -13,7 +13,7 @@ def init_and_plot():
     a = -1
     b = 1
     n = 4
-    strategy = 'Even'
+    strategy = 'O'
     plot(x, expr, a, b, n, strategy)
 
 
@@ -52,9 +52,9 @@ def plot_spline(spline_map):
 
 
 def plot(x, expr, a, b, n, strategy='Optimal'):
-    if strategy == 'Optimal':
+    if strategy == 'Optimal' or strategy == 'O':
         chosen_vals = pr.optimal_values(expr, a, b, n)
-    elif strategy == 'Even':
+    elif strategy == 'Even' or strategy == 'E':
         chosen_vals = pr.even_values(expr, a, b, n)
     else:
         raise ValueError('Unknown strategy!')

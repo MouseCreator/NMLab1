@@ -15,8 +15,8 @@ def define_a(vals):
     a_matrix = np.zeros((m, m))
     for i in range(m):
         if i > 0:
-            a_matrix[i][i - 1] = semi_diagonal_element(vals, i+1)
-        a_matrix[i][i] = diagonal_element(vals, i+1)
+            a_matrix[i][i - 1] = semi_diagonal_element(vals, i + 1)
+        a_matrix[i][i] = diagonal_element(vals, i + 1)
         if i < m - 1:
             a_matrix[i][i + 1] = semi_diagonal_element(vals, i + 2)
     return a_matrix
@@ -37,8 +37,8 @@ def define_h(vals):
     m = len(vals) - 2
     h_matrix = np.zeros((m, m + 2))
     for i in range(m):
-        h_matrix[i][i] = 1 / get_h(vals, i+1)
-        h_matrix[i][i + 1] = -1 / get_h(vals, i+1) - 1 / get_h(vals, i + 2)
+        h_matrix[i][i] = 1 / get_h(vals, i + 1)
+        h_matrix[i][i + 1] = -1 / get_h(vals, i + 1) - 1 / get_h(vals, i + 2)
         h_matrix[i][i + 2] = 1 / get_h(vals, i + 2)
     return h_matrix
 
@@ -53,11 +53,22 @@ def define_x(vals):
         x.append(v.argument())
     return x
 
+
 def nth_derivative_at_x0(expr_str, n, x0):
     x = sp.symbols('x')
     expr = sp.sympify(expr_str)
     nth_derivative = sp.diff(expr, x, n)
     return nth_derivative.subs(x, x0)
+
+
+def to_full_vector(m_v):
+    full_v = [0]
+    for m in m_v:
+        full_v.append(m)
+    full_v.append(0)
+    return full_v
+
+
 def spline_interpolation(vals):
     x = sp.symbols('x')
     a_matrix = define_a(vals)
@@ -67,12 +78,12 @@ def spline_interpolation(vals):
     b_vector = h_matrix.dot(f_vector).astype(np.float64)
     m_vector = solve(a_matrix, b_vector)
     splines = {}
-    m_full = [0, m_vector, 0]
+    m_full = to_full_vector(m_vector)
     for i in range(1, len(m_full)):
         h = get_h(vals, i)
         s = (m_full[i - 1] * (x_vector[i] - x) ** 3 / (6 * h) +
              + m_full[i] * (x - x_vector[i - 1]) ** 3 / (6 * h) +
              + (f_vector[i - 1] - m_full[i - 1] * h ** 2 / 6) * (x_vector[i] - x) / h +
              + (f_vector[i] - m_full[i] * h ** 2 / 6) * (x - x_vector[i - 1]) / h)
-        splines[(x_vector[i - 1], x_vector[i])] = s[0]
+        splines[(x_vector[i - 1], x_vector[i])] = s
     return splines
