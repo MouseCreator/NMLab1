@@ -2,16 +2,19 @@ import val as v
 import sympy as sp
 
 
-
+def v_product_except(v_prod, x, val):
+    return v_prod / (x - val.argument())
 
 
 def lagrange_interpolation(vals):
     x = sp.symbols('x')
     v_prod = v_product(vals, x)
-    v_der = derivative_v_product(v_prod, x)
     polynomial = 0
+    k = 0
     for val in vals:
-        polynomial = polynomial + (v_prod * val.function()) / ((x - val.argument()) * v.at(v_der, val.argument()))
+        v_prod_curr = v_product_except(v_prod, x, vals[k])
+        polynomial = polynomial + (v_prod_curr * val.function()) / (v.at(v_prod_curr, val.argument()))
+        k += 1
     return v.simplify(polynomial)
 
 

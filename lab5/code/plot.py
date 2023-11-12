@@ -12,14 +12,14 @@ def init_and_plot():
     expr = 3 ** x
     a = -1
     b = 1
-    n = 3
+    n = 4
     strategy = 'Even'
     plot(x, expr, a, b, n, strategy)
 
 
 def add_to_plot(x, expr, a, b, name):
     numpy_function = sp.lambdify(x, expr, 'numpy')
-    x_values = np.linspace(a, b, 100)
+    x_values = np.linspace(a, b, 1000)
     y_values = numpy_function(x_values)
     plt.plot(x_values, y_values, label=name)
 

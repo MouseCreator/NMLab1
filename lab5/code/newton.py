@@ -17,8 +17,8 @@ def calculate_table(vals):
         args.append(v.argument())
         curr.append(v.function())
         table[i][0] = v.function()
-    next_c = []
     for i in range(1, len(vals)):
+        next_c = []
         for j in range(0, len(curr) - 1):
             dd = divided_difference(curr[j], curr[j + 1], args[j], args[j + i])
             next_c.append(dd)
