@@ -44,7 +44,7 @@ def define_h(vals):
 
 
 def solve(a_matrix, b_vector):
-    return []
+    return np.linalg.solve(a_matrix, b_vector)
 
 
 def define_x(vals):
