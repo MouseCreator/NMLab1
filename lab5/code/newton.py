@@ -36,7 +36,7 @@ def newton_interpolation(vals):
     for i in range(0, n):
         polynomial = polynomial + prod * table[0][i]
         prod = prod * (x - vals[i].argument())
-    return v.simplify(polynomial)
+    return polynomial
 
 
 def test():

@@ -13,7 +13,7 @@ def lagrange_interpolation(vals):
     for val in vals:
         v_prod_curr = v_product_except(v_prod, x, val)
         polynomial = polynomial + (v_prod_curr * val.function()) / (v.at(v_prod_curr, val.argument()))
-    return v.simplify(polynomial)
+    return polynomial
 
 
 def v_product(vals, x):

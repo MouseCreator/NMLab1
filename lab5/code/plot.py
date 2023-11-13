@@ -9,11 +9,11 @@ import spline as sl
 
 def init_and_plot():
     x = sp.symbols('x')
-    expr = 3 ** x
+    expr = sp.sin(3*x) * 2
     a = -2
     b = 2
-    n = 5
-    strategy = 'O'
+    n = 10
+    strategy = 'E'
     plot(x, expr, a, b, n, strategy)
 
 

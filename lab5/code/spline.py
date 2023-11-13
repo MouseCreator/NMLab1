@@ -7,7 +7,7 @@ def diagonal_element(vals, i):
 
 
 def semi_diagonal_element(vals, i):
-    return (vals[i].argument()) / 6
+    return (get_h(vals, i)) / 6
 
 
 def define_a(vals):
